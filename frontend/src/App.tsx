@@ -1,12 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import Container from "react-bootstrap/esm/Container";
 import "./App.css";
+import LandingPage from "./pages/landingPage";
+import Login from "./pages/login";
 
 const App = () => {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
-    </div>
+    <Container fluid className="App">
+      {/* <LandingPage /> */}
+      <Login />
+    </Container>
   );
 };
 
