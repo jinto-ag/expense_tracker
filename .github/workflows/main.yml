@@ -16,15 +16,12 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '18.x'
-        
-    - name: CD to Frontend  
-      run: cd frontend
       
     - name: Install dependencies
-      run: cd frontend && npm install
+      run: npm install
       
     - name: Build project
-      run: cd frontend && npm run build
+      run: npm run build
       
     - name: Deploy to FTP server
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
