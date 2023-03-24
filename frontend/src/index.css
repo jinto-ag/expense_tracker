@@ -10,4 +10,6 @@ body,
 
 a {
   color: inherit;
+  font: inherit;
 }
+
