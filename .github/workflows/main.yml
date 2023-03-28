@@ -29,6 +29,6 @@ jobs:
         server: 217.21.87.172
         username: u538894454.jinto.in
         password: '${{ secrets.FTP_PASSWORD }}'
-        server-dir: /public_html/expensetracker
+        server-dir: /public_html/expensetracker/
         local-dir: build/
         exclude: .git*
