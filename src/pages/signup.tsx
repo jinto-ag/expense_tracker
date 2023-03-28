@@ -5,7 +5,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import Logo from "../assets/logo.svg";
 
-const Login = () => {
+const SignUp = () => {
   const [validated, setValidated] = useState<boolean>(false);
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,42 +20,36 @@ const Login = () => {
     <Container className="vh-100">
       <Row className="justify-content-center align-items-center h-100">
         <Col lg="6">
-          <Stack gap={3} className="align-items-center justify-content-center">
-            <div className="d-flex align-items-center justify-content-center gap-2">
-              <Image src={Logo} alt="Logo" width="64px" />
-              <h1>Expense Tracker</h1>
-            </div>
+          <Stack gap={2} className="align-items-center justify-content-center">
+            <Image src={Logo} alt="Logo" width="33%" />
             <Form noValidate validated={validated} onSubmit={submitHandler}>
-              <Form.Group className="mb-3" controlId="username">
-                <FloatingLabel controlId="usernameLabel" label="Email address">
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <FloatingLabel controlId="floatingInput" label="Email address">
                   <Form.Control
                     type="email"
                     placeholder="name@example.com"
                     required
                   />
-                  <Form.Control.Feedback type="invalid">
-                    Please enter a username!
-                  </Form.Control.Feedback>
                 </FloatingLabel>
+                <Form.Control.Feedback type="invalid">Please enter a username!</Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="password">
-                <FloatingLabel controlId="passwordLabel" label="Password">
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <FloatingLabel controlId="floatingPassword" label="Password">
                   <Form.Control
                     type="password"
                     placeholder="Password"
                     required
                   />
-                  <Form.Control.Feedback type="invalid">
-                    Password can not be blank!
-                  </Form.Control.Feedback>
                 </FloatingLabel>
+                <Form.Control.Feedback type="invalid">Password can not be blank!</Form.Control.Feedback>
               </Form.Group>
+
               <Stack gap={2}>
                 <Button variant="primary" type="submit">
-                  Login
+                  Signup
                 </Button>
                 <Button variant="secondary" as="a">
-                  Signup
+                  Login
                 </Button>
               </Stack>
             </Form>
@@ -66,4 +60,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
