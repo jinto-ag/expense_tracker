@@ -17,16 +17,19 @@ const SignUp = () => {
       label: "Email",
       type: "email",
       isFloatingLabel: true,
+      required:true
     },
     {
       label: "Password",
       type: "password",
       isFloatingLabel: true,
+      required:true
     },
     {
       label: "Confirm Password",
       type: "password",
       isFloatingLabel: true,
+      required:true
     },
   ];
 

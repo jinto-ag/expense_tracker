@@ -96,7 +96,7 @@ const Form: React.FC<FormProps> = ({ fields, buttons, onSubmit }) => {
       noValidate
       validated={validated}
       onSubmit={submitHandler}
-      className="w-100"
+      className=""
     >
       {fieldComponents}
       <Stack gap={2}>{buttonComponents}</Stack>
