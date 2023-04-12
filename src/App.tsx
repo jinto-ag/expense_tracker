@@ -4,13 +4,16 @@ import "./App.css";
 import LandingPage from "./pages/landingPage";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "./services/firebaseConfig";
 
 const App = () => {
+  const app = initializeApp(firebaseConfig);
   return (
     <Container fluid className="App">
       {/* <LandingPage /> */}
-      {/* <Login /> */}
-      <SignUp />
+      <Login />
+      {/* <SignUp /> */}
     </Container>
   );
 };

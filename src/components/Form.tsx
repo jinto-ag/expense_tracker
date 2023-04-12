@@ -41,6 +41,7 @@ const Form: React.FC<FormProps> = ({ fields, buttons, onSubmit }) => {
               type={field.type}
               placeholder={field.placeholder}
               required={field.required ? true : false}
+              name={field.name}
             />
             {field.invalidText ? (
               <FormControl.Feedback type="invalid">
@@ -65,6 +66,7 @@ const Form: React.FC<FormProps> = ({ fields, buttons, onSubmit }) => {
               type={field.type}
               placeholder={field.placeholder}
               required={field.required ? true : false}
+              name={field.name}
             />
             {field.invalidText ? (
               <FormControl.Feedback type="invalid">

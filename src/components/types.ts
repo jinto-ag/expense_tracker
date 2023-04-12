@@ -14,6 +14,7 @@ export interface FormField {
   validText?: string;
   isFloatingLabel?: boolean;
   required?: boolean;
+  name?:string;
 }
 
 export enum ButtonTypes {
