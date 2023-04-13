@@ -87,7 +87,7 @@ const Form: React.FC<FormProps> = ({ fields, buttons, onSubmit }) => {
 
   const buttonComponents = buttons.map((button) => {
     return (
-      <Button variant={button.context} type={button.type}>
+      <Button variant={button.context} type={button.type} key={button.label}>
         {button.label}
       </Button>
     );

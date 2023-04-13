@@ -6,14 +6,19 @@ import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./services/firebaseConfig";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
   const app = initializeApp(firebaseConfig);
   return (
     <Container fluid className="App">
-      {/* <LandingPage /> */}
-      <Login />
-      {/* <SignUp /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </BrowserRouter>
     </Container>
   );
 };

@@ -1,32 +1,36 @@
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { Col, Container, Image, Row, Stack } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Logo from "../assets/logo.svg";
 import Form from "../components/Form";
-import { Button, ButtonTypes, Context, FormField } from "../components/types";
+import Button from "../components/styled/Button";
+import {
+  Button as Btn,
+  ButtonTypes,
+  Context,
+  FormField,
+} from "../components/types";
+import { useAuth } from "../context/AuthContext";
 
 const SignUp = () => {
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const { signUp } = useAuth();
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const form = e.currentTarget;
 
     const formData = new FormData(form);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+    try {
+      await signUp(email, password);
+      // Signed in
+      // ...
+    } catch (error) {
+      // An error happened
+      // ...
+    }
   };
 
   const fields: FormField[] = [
@@ -55,16 +59,11 @@ const SignUp = () => {
     },
   ];
 
-  const buttons: Button[] = [
+  const buttons: Btn[] = [
     {
       label: "Sign up",
       type: ButtonTypes.SUBMIT,
       context: Context.PRIMARY,
-    },
-    {
-      label: "Login",
-      type: ButtonTypes.BUTTON,
-      context: Context.SECONDARY,
     },
   ];
 
@@ -75,6 +74,9 @@ const SignUp = () => {
           <Stack gap={2} className="align-items-center justify-content-center">
             <Image src={Logo} alt="Logo" width="33%" />
             <Form fields={fields} buttons={buttons} onSubmit={submitHandler} />
+            <Link to={"/login"}>
+              <Button variant="secondary">Login</Button>
+            </Link>
           </Stack>
         </Col>
       </Row>

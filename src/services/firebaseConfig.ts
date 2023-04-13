@@ -10,6 +10,10 @@ export const firebaseConfig = {
   projectId: "expense-tracker-becde",
   storageBucket: "expense-tracker-becde.appspot.com",
   messagingSenderId: "972659156388",
-  appId: "1:972659156388:web:bb844e1c3fe2756f798d31"
+  appId: "1:972659156388:web:bb844e1c3fe2756f798d31",
 };
 
+const appSettings = {
+  databaseURL:
+    "https://expense-tracker-becde-default-rtdb.asia-southeast1.firebasedatabase.app/",
+};

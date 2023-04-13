@@ -1,16 +1,21 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Col, Container, Image, Row, Stack } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
 import Logo from "../assets/logo.svg";
 import Form from "../components/Form";
+import { Link } from "react-router-dom";
 import {
   Button as ButtonType,
   ButtonTypes,
   Context,
   FormField,
 } from "../components/types";
+import Button from "../components/styled/Button";
 
 const Login = () => {
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const { signIn } = useAuth();
+
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -19,19 +24,15 @@ const Login = () => {
     const formData = new FormData(form);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // ...
-        alert("You are signed in.")
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+
+    try {
+      await signIn(email, password);
+      // Signed in
+      // ...
+    } catch (error) {
+      // An error happened
+      // ...
+    }
   };
   const fields: FormField[] = [
     {
@@ -40,7 +41,7 @@ const Login = () => {
       isFloatingLabel: true,
       required: true,
       placeholder: "name@example.com",
-      name:"email"
+      name: "email",
     },
     {
       label: "Password",
@@ -48,7 +49,7 @@ const Login = () => {
       isFloatingLabel: true,
       required: true,
       placeholder: "password",
-      name:"password"
+      name: "password",
     },
   ];
 
@@ -57,11 +58,6 @@ const Login = () => {
       label: "Login",
       type: ButtonTypes.SUBMIT,
       context: Context.PRIMARY,
-    },
-    {
-      label: "Sign up",
-      type: ButtonTypes.BUTTON,
-      context: Context.SECONDARY,
     },
   ];
 
@@ -75,6 +71,9 @@ const Login = () => {
           >
             <Image src={Logo} alt="Logo" width="150px" />
             <Form fields={fields} buttons={buttons} onSubmit={submitHandler} />
+            <Link to="/signup">
+              <Button variant="secondary">Signup</Button>
+            </Link>
           </Stack>
         </Col>
       </Row>
