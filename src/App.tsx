@@ -1,12 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import Container from "react-bootstrap/esm/Container";
-import "./App.css";
-import LandingPage from "./pages/landingPage";
-import Login from "./pages/login";
-import SignUp from "./pages/signup";
 import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "./services/firebaseConfig";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Container from "react-bootstrap/esm/Container";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import { firebaseConfig } from "./configs/firebaseConfig";
+import Login from "./pages/authentication/signin";
+import SignUp from "./pages/authentication/signup";
+import Error404 from "./pages/error/404";
 
 const App = () => {
   const app = initializeApp(firebaseConfig);
@@ -14,9 +14,9 @@ const App = () => {
     <Container fluid className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="*" element={<Error404 />} />
         </Routes>
       </BrowserRouter>
     </Container>

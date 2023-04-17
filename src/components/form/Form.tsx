@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Form as RBForm, Stack } from "react-bootstrap";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-import Button from "../components/styled/Button";
-import FormControl from "../components/styled/FormControl";
-import { Button as ButtonType, FormField } from "./types";
+import Button from "../styled/Button";
+import FormControl from "../styled/FormControl";
+import { Button as ButtonType, FormField } from "../types";
 
 interface FormProps {
   fields: FormField[];

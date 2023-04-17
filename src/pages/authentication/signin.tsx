@@ -1,18 +1,20 @@
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Col, Container, Image, Row, Stack } from "react-bootstrap";
+import { useAuth } from "../../context/AuthContext";
+import Logo from "../../assets/logo.svg";
+import Form from "../../components/form/Form";
 import { Link } from "react-router-dom";
-import Logo from "../assets/logo.svg";
-import Form from "../components/Form";
-import Button from "../components/styled/Button";
 import {
-  Button as Btn,
+  Button as ButtonType,
   ButtonTypes,
   Context,
   FormField,
-} from "../components/types";
-import { useAuth } from "../context/AuthContext";
+} from "../../components/types";
+import Button from "../../components/styled/Button";
 
-const SignUp = () => {
-  const { signUp } = useAuth();
+const SignIn = () => {
+  const { signIn } = useAuth();
+
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -24,7 +26,7 @@ const SignUp = () => {
     const password = formData.get("password") as string;
 
     try {
-      await signUp(email, password);
+      await signIn(email, password);
       // Signed in
       // ...
     } catch (error) {
@@ -32,7 +34,6 @@ const SignUp = () => {
       // ...
     }
   };
-
   const fields: FormField[] = [
     {
       label: "Email",
@@ -50,18 +51,11 @@ const SignUp = () => {
       placeholder: "password",
       name: "password",
     },
-    {
-      label: "Confirm Password",
-      type: "password",
-      isFloatingLabel: true,
-      required: true,
-      placeholder: "password",
-    },
   ];
 
-  const buttons: Btn[] = [
+  const buttons: ButtonType[] = [
     {
-      label: "Sign up",
+      label: "SignIn",
       type: ButtonTypes.SUBMIT,
       context: Context.PRIMARY,
     },
@@ -71,11 +65,14 @@ const SignUp = () => {
     <Container className="vh-100">
       <Row className="justify-content-center align-items-center h-100">
         <Col lg="6">
-          <Stack gap={2} className="align-items-center justify-content-center">
-            <Image src={Logo} alt="Logo" width="33%" />
+          <Stack
+            gap={3}
+            className="align-items-center justify-content-center w-100"
+          >
+            <Image src={Logo} alt="Logo" width="150px" />
             <Form fields={fields} buttons={buttons} onSubmit={submitHandler} />
-            <Link to={"/login"}>
-              <Button variant="secondary">Login</Button>
+            <Link to="/signup">
+              <Button variant="secondary">Signup</Button>
             </Link>
           </Stack>
         </Col>
@@ -84,4 +81,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;
