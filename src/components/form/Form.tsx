@@ -18,11 +18,11 @@ const Form: React.FC<FormProps> = ({ fields, buttons, onSubmit }) => {
     e.preventDefault();
     e.stopPropagation();
     const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      setValidated(false);
-    }
+    const isFormValid = form.checkValidity();
     setValidated(true);
-    onSubmit(e);
+    if (isFormValid) {
+      onSubmit(e);
+    }
   };
 
   const fieldComponents = fields.map((field) => {

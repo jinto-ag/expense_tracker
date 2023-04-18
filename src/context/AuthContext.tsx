@@ -5,14 +5,17 @@ import {
   User,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut,
+  signOut as fbSignOut,
 } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../configs/firebaseConfig";
 
 interface AuthContextValue {
   currentUser: User | null;
+  loading: boolean;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -21,18 +24,22 @@ interface AuthProviderProps {
 
 const AuthContext = createContext<AuthContextValue>({
   currentUser: null,
+  loading: true,
   signUp: async () => {},
   signIn: async () => {},
-  logout: async () => {},
+  signOut: async () => {},
 });
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const auth = getAuth();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      setLoading(false);
     });
     return unsubscribe;
   }, []);
@@ -48,6 +55,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const signIn = async (email: string, password: string) => {
+    if (currentUser) {
+      // User is already logged in
+      return;
+    }
     const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -57,10 +68,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const logout = async () => {
+  const signOut = async () => {
     const auth = getAuth();
     try {
-      await signOut(auth);
+      await fbSignOut(auth);
       // Sign-out successful.
     } catch (error) {
       // An error happened.
@@ -68,7 +79,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, signUp, signIn, logout }}>
+    <AuthContext.Provider
+      value={{ currentUser, loading, signUp, signIn, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

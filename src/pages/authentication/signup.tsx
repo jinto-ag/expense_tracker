@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { Col, Container, Image, Row, Stack } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
 import Form from "../../components/form/Form";
 import Button from "../../components/styled/Button";
@@ -12,7 +13,16 @@ import {
 import { useAuth } from "../../context/AuthContext";
 
 const SignUp = () => {
-  const { signUp } = useAuth();
+  const { signUp, currentUser, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && currentUser) {
+      alert("You must sign out before new sign up");
+      navigate("/");
+    }
+  }, [currentUser, navigate, loading]);
+
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -25,11 +35,11 @@ const SignUp = () => {
 
     try {
       await signUp(email, password);
-      // Signed in
-      // ...
+      navigate("/signin");
     } catch (error) {
       // An error happened
       // ...
+      alert(`Error occured while signup! ${error}`);
     }
   };
 
@@ -74,8 +84,8 @@ const SignUp = () => {
           <Stack gap={2} className="align-items-center justify-content-center">
             <Image src={Logo} alt="Logo" width="33%" />
             <Form fields={fields} buttons={buttons} onSubmit={submitHandler} />
-            <Link to={"/login"}>
-              <Button variant="secondary">Login</Button>
+            <Link to={"/signin"}>
+              <Button variant="secondary">Sign IN</Button>
             </Link>
           </Stack>
         </Col>

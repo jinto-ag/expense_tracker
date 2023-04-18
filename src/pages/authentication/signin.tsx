@@ -1,19 +1,41 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useEffect } from "react";
 import { Col, Container, Image, Row, Stack } from "react-bootstrap";
-import { useAuth } from "../../context/AuthContext";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
 import Form from "../../components/form/Form";
-import { Link } from "react-router-dom";
+import Button from "../../components/styled/Button";
 import {
   Button as ButtonType,
   ButtonTypes,
   Context,
   FormField,
 } from "../../components/types";
-import Button from "../../components/styled/Button";
+import { useAuth } from "../../context/AuthContext";
+import Loader from "../../components/Loader";
 
-const SignIn = () => {
-  const { signIn } = useAuth();
+interface LocationState {
+  from: {
+    pathname: string;
+  };
+}
+
+const SignIn: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation() as { state: LocationState };
+  const { signIn, currentUser, loading } = useAuth();
+
+  const redirectUrl = location.state?.from.pathname || "/";
+  console.log("Redirect URL: ", redirectUrl);
+
+  useEffect(() => {
+    if (!loading && currentUser) {
+      navigate(redirectUrl);
+    }
+  }, [currentUser, navigate, redirectUrl, loading]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,9 +51,11 @@ const SignIn = () => {
       await signIn(email, password);
       // Signed in
       // ...
+      navigate(redirectUrl);
     } catch (error) {
       // An error happened
       // ...
+      alert(`Error Occured! ${error}`);
     }
   };
   const fields: FormField[] = [
@@ -55,7 +79,7 @@ const SignIn = () => {
 
   const buttons: ButtonType[] = [
     {
-      label: "SignIn",
+      label: "Sign In",
       type: ButtonTypes.SUBMIT,
       context: Context.PRIMARY,
     },
@@ -72,7 +96,7 @@ const SignIn = () => {
             <Image src={Logo} alt="Logo" width="150px" />
             <Form fields={fields} buttons={buttons} onSubmit={submitHandler} />
             <Link to="/signup">
-              <Button variant="secondary">Signup</Button>
+              <Button variant="secondary">Sign Up</Button>
             </Link>
           </Stack>
         </Col>

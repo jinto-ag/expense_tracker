@@ -1,25 +1,32 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { initializeApp } from "firebase/app";
 import Container from "react-bootstrap/esm/Container";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
-import { firebaseConfig } from "./configs/firebaseConfig";
-import Login from "./pages/authentication/signin";
-import SignUp from "./pages/authentication/signup";
-import Error404 from "./pages/error/404";
+import Routes from "./Routes";
+import NavigationBar from "./components/navbar/NavigationBar";
+import { useAuth } from "./context/AuthContext";
+import { useEffect } from "react";
+import Loader from "./components/Loader";
 
 const App = () => {
-  const app = initializeApp(firebaseConfig);
+  const { currentUser, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && currentUser) {
+    }
+  }, [currentUser, loading]);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <Container fluid className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="*" element={<Error404 />} />
-        </Routes>
-      </BrowserRouter>
-    </Container>
+    <Router>
+      <Container fluid className="App">
+        <NavigationBar />
+        <Routes />
+      </Container>
+    </Router>
   );
 };
 

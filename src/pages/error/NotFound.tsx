@@ -1,10 +1,10 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import styles from "./404.module.css";
+import styles from "./NotFound.module.css";
 import logo from "../../assets/logo.svg";
 import Button from "../../components/styled/Button";
 
-const NotFoundPage: React.FC = () => {
+const NotFound: React.FC = () => {
   const handleGoHome = () => {};
 
   return (
@@ -16,4 +16,4 @@ const NotFoundPage: React.FC = () => {
   );
 };
 
-export default NotFoundPage;
+export default NotFound;
