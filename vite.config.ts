@@ -2,18 +2,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { VitePWA } from "vite-plugin-pwa";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      // configure the workbox plugin
       workbox: {
         // workbox options here
       },
-      // configure the manifest options
       manifest: {
         // manifest options here
+        display: "standalone",
         icons: [
           {
             src: "./src/assets/logo.svg",
