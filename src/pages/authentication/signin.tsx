@@ -35,10 +35,6 @@ const SignIn: React.FC = () => {
     }
   }, [currentUser, navigate, redirectUrl, loading]);
 
-  if (loading) {
-    return <Loader />;
-  }
-
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();

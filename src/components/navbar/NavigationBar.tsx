@@ -1,31 +1,24 @@
-import React, { useRef, useState } from "react";
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
-import { useAuth } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
-import styles from "./NavigationBar.module.css";
+import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.svg";
+import { useAuth } from "../../context/AuthContext";
+import styles from "./NavigationBar.module.css";
 
 const NavigationBar = () => {
   const { currentUser, signOut } = useAuth();
-  const [expanded, setExpanded] = useState(false);
-  const navbarRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
       await signOut();
+      navigate("/signin");
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <Navbar
-      bg="light"
-      expand="lg"
-      ref={navbarRef}
-      expanded={expanded}
-      onToggle={() => setExpanded((prevExpanded: any) => !prevExpanded)}
-    >
+    <Navbar bg="light" expand="lg">
       <Container>
         <Navbar.Brand as={Link} to="/">
           <img

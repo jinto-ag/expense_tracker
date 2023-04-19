@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import Loader from "./components/Loader";
 import MessageAlert from "./components/message/MessageAlert";
 import { useMessage } from "./context/MessageContext";
+import Splash from "./components/Splash";
 
 const App = () => {
   const { currentUser, loading } = useAuth();
@@ -18,6 +19,13 @@ const App = () => {
     if (!loading && currentUser) {
     }
   }, [currentUser, loading]);
+
+  // useEffect(() => {
+  //   const timerId = setTimeout(() => {
+  //     return <Splash />;
+  //   }, 3000);
+  //   return () => clearTimeout(timerId);
+  // }, []);
 
   if (loading) {
     return <Loader />;

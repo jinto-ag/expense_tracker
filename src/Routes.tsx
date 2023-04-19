@@ -13,23 +13,23 @@ const Routes = () => {
   return (
     <RouterRoutes>
       <Route
-        path="/"
-        element={currentUser ? <Navigate to="/expenses" /> : undefined}
-      />
-      <Route
         index
         path="/*"
         element={
-          <ProtectedRoute>
-            <RouterRoutes>
-              <Route path="/expenses">
-                <Route index element={<ExpenseList />} />
-                <Route path="new" element={<ExpenseForm />} />
-                <Route path=":id" element={<ExpenseDetail />} />
-                <Route path=":id/edit" element={<ExpenseForm />} />
-              </Route>
-            </RouterRoutes>
-          </ProtectedRoute>
+          currentUser ? (
+            <ProtectedRoute>
+              <RouterRoutes>
+                <Route path="/expenses">
+                  <Route index element={<ExpenseList />} />
+                  <Route path="new" element={<ExpenseForm />} />
+                  <Route path=":id" element={<ExpenseDetail />} />
+                  <Route path=":id/edit" element={<ExpenseForm />} />
+                </Route>
+              </RouterRoutes>
+            </ProtectedRoute>
+          ) : (
+            <Navigate to="/signin" />
+          )
         }
       />
       <Route path="/signin" element={<SignIn />} />

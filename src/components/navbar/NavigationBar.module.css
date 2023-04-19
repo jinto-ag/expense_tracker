@@ -1,9 +1,9 @@
-.navbarCollapse {
+.navbarCollapse.show {
   position: absolute;
   top: 56px; /* adjust this value based on the height of your navbar */
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 10;
   padding: 0 16px;
   background-color: var(--bs-light);
 }
