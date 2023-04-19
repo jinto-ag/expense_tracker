@@ -1,0 +1,16 @@
+.animatedCircle {
+    animation: dash 1.5s ease-in-out infinite;
+    stroke-dashoffset: 0px;
+  }
+  
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 80px;
+    }
+    50% {
+      stroke-dashoffset: -40px;
+    }
+    100% {
+      stroke-dashoffset: -120px;
+    }
+  }

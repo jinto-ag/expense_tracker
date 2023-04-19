@@ -5,6 +5,8 @@ import SignIn from "./pages/authentication/signin";
 import SignUp from "./pages/authentication/signup";
 import NotFound from "./pages/error/NotFound";
 import ExpenseForm from "./pages/expense/expenseForm";
+import ExpenseList from "./pages/expense/expenseList";
+import ExpenseDetail from "./pages/expense/expenseDetail";
 
 const Routes = () => {
   const { currentUser } = useAuth();
@@ -12,15 +14,20 @@ const Routes = () => {
     <RouterRoutes>
       <Route
         path="/"
-        element={currentUser ? <Navigate to="/protected/expenses" /> : undefined}
+        element={currentUser ? <Navigate to="/expenses" /> : undefined}
       />
       <Route
         index
-        path="/protected/*"
+        path="/*"
         element={
           <ProtectedRoute>
             <RouterRoutes>
-              <Route path="/expenses" element={<ExpenseForm />} />
+              <Route path="/expenses">
+                <Route index element={<ExpenseList />} />
+                <Route path="new" element={<ExpenseForm />} />
+                <Route path=":id" element={<ExpenseDetail />} />
+                <Route path=":id/edit" element={<ExpenseForm />} />
+              </Route>
             </RouterRoutes>
           </ProtectedRoute>
         }

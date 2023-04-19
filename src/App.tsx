@@ -7,9 +7,12 @@ import NavigationBar from "./components/navbar/NavigationBar";
 import { useAuth } from "./context/AuthContext";
 import { useEffect } from "react";
 import Loader from "./components/Loader";
+import MessageAlert from "./components/message/MessageAlert";
+import { useMessage } from "./context/MessageContext";
 
 const App = () => {
   const { currentUser, loading } = useAuth();
+  const { messages } = useMessage();
 
   useEffect(() => {
     if (!loading && currentUser) {
@@ -22,8 +25,9 @@ const App = () => {
 
   return (
     <Router>
+      <MessageAlert messages={messages} />
       <Container fluid className="App">
-        <NavigationBar />
+        {currentUser && <NavigationBar />}
         <Routes />
       </Container>
     </Router>

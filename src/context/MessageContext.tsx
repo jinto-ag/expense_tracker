@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Message } from "../components/types";
 
 interface MessageContextValue {
-  // define the shape of your message data here
-  messages: string[];
-  setMessages: (messages: string[]) => void;
+  messages: Message[];
+  addMessage: (message: Message) => void;
 }
 
 const MessageContext = React.createContext<MessageContextValue | undefined>(
@@ -17,11 +17,33 @@ type MessageProviderProps = {
 export const MessageProvider: React.FC<MessageProviderProps> = ({
   children,
 }) => {
-  // use Firebase to fetch and manage message data her
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  const addMessage = (message: Message) => {
+    setMessages((prevMessages) => [...prevMessages, message]);
+  };
+
+  useEffect(() => {
+    const timeouts = messages.map((message, index) => {
+      if (message.autoClose) {
+        return setTimeout(() => {
+          setMessages((prevMessages) =>
+            prevMessages.filter((_, i) => i !== index)
+          );
+        }, message.timeout || 5000);
+      }
+      return null;
+    });
+
+    return () => {
+      timeouts.forEach((timeout) => {
+        if (timeout) clearTimeout(timeout);
+      });
+    };
+  }, [messages]);
 
   return (
-    <MessageContext.Provider value={{ messages, setMessages }}>
+    <MessageContext.Provider value={{ messages, addMessage }}>
       {children}
     </MessageContext.Provider>
   );

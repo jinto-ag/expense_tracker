@@ -9,6 +9,8 @@ import {
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../configs/firebaseConfig";
+import { useMessage } from "./MessageContext";
+import { Context } from "../components/types";
 
 interface AuthContextValue {
   currentUser: User | null;
@@ -33,6 +35,7 @@ const AuthContext = createContext<AuthContextValue>({
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { addMessage } = useMessage();
 
   useEffect(() => {
     const app = initializeApp(firebaseConfig);
@@ -72,9 +75,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const auth = getAuth();
     try {
       await fbSignOut(auth);
-      // Sign-out successful.
+      addMessage({
+        text: "Signed Out successfully!",
+        type: Context.SUCCESS,
+        autoClose: true,
+        timeout: 3000,
+      });
     } catch (error) {
-      // An error happened.
+      addMessage({
+        text: `Error Occured! ${error}`,
+        type: Context.DANGER,
+        autoClose: false,
+      });
     }
   };
 

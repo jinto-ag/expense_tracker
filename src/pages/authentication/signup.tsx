@@ -11,9 +11,11 @@ import {
   FormField,
 } from "../../components/types";
 import { useAuth } from "../../context/AuthContext";
+import { useMessage } from "../../context/MessageContext";
 
 const SignUp = () => {
   const { signUp, currentUser, loading } = useAuth();
+  const { addMessage } = useMessage();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,11 +37,19 @@ const SignUp = () => {
 
     try {
       await signUp(email, password);
+      addMessage({
+        text: "Signed in successfully!",
+        type: Context.SUCCESS,
+        autoClose: true,
+        timeout: 3000,
+      });
       navigate("/signin");
     } catch (error) {
-      // An error happened
-      // ...
-      alert(`Error occured while signup! ${error}`);
+      addMessage({
+        text: `Error Occured! ${error}`,
+        type: Context.DANGER,
+        autoClose: false,
+      });
     }
   };
 

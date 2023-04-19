@@ -12,6 +12,7 @@ import {
 } from "../../components/types";
 import { useAuth } from "../../context/AuthContext";
 import Loader from "../../components/Loader";
+import { useMessage } from "../../context/MessageContext";
 
 interface LocationState {
   from: {
@@ -23,6 +24,7 @@ const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation() as { state: LocationState };
   const { signIn, currentUser, loading } = useAuth();
+  const { addMessage } = useMessage();
 
   const redirectUrl = location.state?.from.pathname || "/";
   console.log("Redirect URL: ", redirectUrl);
@@ -49,13 +51,21 @@ const SignIn: React.FC = () => {
 
     try {
       await signIn(email, password);
-      // Signed in
-      // ...
+
+      addMessage({
+        text: "Signed in successfully!",
+        type: Context.SUCCESS,
+        autoClose: true,
+        timeout: 3000,
+      });
+
       navigate(redirectUrl);
     } catch (error) {
-      // An error happened
-      // ...
-      alert(`Error Occured! ${error}`);
+      addMessage({
+        text: `Error Occured! ${error}`,
+        type: Context.DANGER,
+        autoClose: false,
+      });
     }
   };
   const fields: FormField[] = [

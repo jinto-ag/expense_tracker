@@ -1,6 +1,7 @@
 export enum Context {
   PRIMARY = "primary",
   SECONDARY = "secondary",
+  SUCCESS = "success",
   INFO = "info",
   WARNING = "warning",
   DANGER = "danger",
@@ -14,7 +15,7 @@ export interface FormField {
   validText?: string;
   isFloatingLabel?: boolean;
   required?: boolean;
-  name?:string;
+  name?: string;
 }
 
 export enum ButtonTypes {
@@ -27,4 +28,11 @@ export interface Button {
   label: string;
   context: Context;
   type: ButtonTypes;
+}
+
+export interface Message {
+  text: string;
+  type: Context;
+  autoClose?: boolean;
+  timeout?: number;
 }

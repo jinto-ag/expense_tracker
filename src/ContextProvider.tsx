@@ -9,13 +9,13 @@ interface ContextProviderProps {
 }
 
 const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => (
-  <AuthProvider>
+  <MessageProvider>
     <ThemeProvider>
-      <DataProvider>
-        <MessageProvider>{children}</MessageProvider>
-      </DataProvider>
+      <AuthProvider>
+        <DataProvider>{children}</DataProvider>
+      </AuthProvider>
     </ThemeProvider>
-  </AuthProvider>
+  </MessageProvider>
 );
 
 export default ContextProvider;
