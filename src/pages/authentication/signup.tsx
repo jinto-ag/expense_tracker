@@ -91,11 +91,11 @@ const SignUp = () => {
     <Container className="vh-100">
       <Row className="justify-content-center align-items-center h-100">
         <Col lg="6">
-          <Stack gap={2} className="align-items-center justify-content-center">
+          <Stack gap={2} className="align-items-center justify-content-center w-100 px-3">
             <Image src={Logo} alt="Logo" width="33%" />
             <Form fields={fields} buttons={buttons} onSubmit={submitHandler} />
-            <Link to={"/signin"}>
-              <Button variant="secondary">Sign IN</Button>
+            <Link to={"/signin"} className="w-100">
+              <Button variant="secondary" className="w-100">Sign IN</Button>
             </Link>
           </Stack>
         </Col>

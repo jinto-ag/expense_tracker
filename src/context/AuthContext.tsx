@@ -7,12 +7,13 @@ import {
   signInWithEmailAndPassword,
   signOut as fbSignOut,
 } from "firebase/auth";
-import { initializeApp } from "firebase/app";
+import { FirebaseApp, initializeApp } from "firebase/app";
 import { firebaseConfig } from "../configs/firebaseConfig";
 import { useMessage } from "./MessageContext";
 import { Context } from "../components/types";
 
 interface AuthContextValue {
+  app: FirebaseApp | undefined;
   currentUser: User | null;
   loading: boolean;
   signUp: (email: string, password: string) => Promise<void>;
@@ -25,6 +26,7 @@ interface AuthProviderProps {
 }
 
 const AuthContext = createContext<AuthContextValue>({
+  app: undefined,
   currentUser: null,
   loading: true,
   signUp: async () => {},
@@ -33,12 +35,14 @@ const AuthContext = createContext<AuthContextValue>({
 });
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [app, setApp] = useState<FirebaseApp>();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const { addMessage } = useMessage();
 
   useEffect(() => {
     const app = initializeApp(firebaseConfig);
+    setApp(app);
     const auth = getAuth(app);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -48,51 +52,44 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const signUp = async (email: string, password: string) => {
+    setLoading(true);
     const auth = getAuth();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      // Sign-up successful.
     } catch (error) {
-      // An error happened.
+    } finally {
+      setLoading(false);
     }
   };
 
   const signIn = async (email: string, password: string) => {
+    setLoading(true);
     if (currentUser) {
-      // User is already logged in
       return;
     }
     const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // Sign-in successful.
     } catch (error) {
-      // An error happened.
+    } finally {
+      setLoading(false);
     }
   };
 
   const signOut = async () => {
+    setLoading(true);
     const auth = getAuth();
     try {
       await fbSignOut(auth);
-      addMessage({
-        text: "Signed Out successfully!",
-        type: Context.SUCCESS,
-        autoClose: true,
-        timeout: 3000,
-      });
     } catch (error) {
-      addMessage({
-        text: `Error Occured! ${error}`,
-        type: Context.DANGER,
-        autoClose: false,
-      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, loading, signUp, signIn, signOut }}
+      value={{ app, currentUser, loading, signUp, signIn, signOut }}
     >
       {children}
     </AuthContext.Provider>

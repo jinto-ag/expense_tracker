@@ -1,19 +1,12 @@
 .formControl {
   padding: 4px 8px;
 
-  width: 358px;
+  /* width: 358px; */
   height: 56px;
 
-  border-radius: 16px;
+  border-radius: 1rem;
 
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
+  line-height: 1.5;
 }
-
-/* 
-
-  background: #ffdadc;
-  color: #400010;
-  */

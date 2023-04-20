@@ -2,23 +2,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0px;
 
-  width: 358px;
   height: 40px;
   border-radius: 40px;
 
-  font-style: normal;
   font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
   letter-spacing: 0.1px;
   text-transform: uppercase;
+
+  padding: .5rem 1rem;
 }
-
-/* 
-  background: #a93349;
-  color: #ffffff;
-
-
-*/

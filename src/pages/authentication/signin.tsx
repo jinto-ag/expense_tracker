@@ -97,12 +97,12 @@ const SignIn: React.FC = () => {
         <Col lg="6">
           <Stack
             gap={3}
-            className="align-items-center justify-content-center w-100"
+            className="align-items-center justify-content-center px-3 w-100"
           >
             <Image src={Logo} alt="Logo" width="150px" />
             <Form fields={fields} buttons={buttons} onSubmit={submitHandler} />
-            <Link to="/signup">
-              <Button variant="secondary">Sign Up</Button>
+            <Link to="/signup" className="w-100">
+              <Button variant="secondary" className="w-100">Sign Up</Button>
             </Link>
           </Stack>
         </Col>

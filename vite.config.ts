@@ -7,10 +7,8 @@ export default defineConfig({
     react(),
     VitePWA({
       workbox: {
-        // workbox options here
       },
       manifest: {
-        // manifest options here
         display: "standalone",
         icons: [
           {

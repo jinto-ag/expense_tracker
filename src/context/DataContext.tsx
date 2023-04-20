@@ -1,6 +1,6 @@
 // DataContext.tsx
 import React from "react";
-import { initializeApp } from 'firebase/app';
+import { initializeApp } from "firebase/app";
 import {
   getDatabase,
   ref,
@@ -9,8 +9,9 @@ import {
   off,
   set,
   remove,
-} from 'firebase/database';
+} from "firebase/database";
 import { firebaseConfig } from "../configs/firebaseConfig";
+import { useAuth } from "./AuthContext";
 
 interface DataContextValue {
   data: any; // define the shape of your data here
@@ -30,15 +31,12 @@ interface DataProviderProps {
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [data, setData] = React.useState<any>(null);
+  const { app } = useAuth();
 
-  // initialize Firebase app
-   // initialize Firebase app
-  const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // use Firebase to fetch and manage data here
   React.useEffect(() => {
-    const dataRef = ref(db, 'data');
+    const dataRef = ref(db, "data");
     const unsubscribe = onValue(dataRef, (snapshot) => {
       setData(snapshot.val());
     });
@@ -48,10 +46,10 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   }, []);
 
   const createData = (data: any) => {
-    push(ref(db, 'data'), data);
+    push(ref(db, "data"), data);
   };
 
- const updateData = (id: string, data: any) => {
+  const updateData = (id: string, data: any) => {
     set(ref(db, `data/${id}`), data);
   };
 
