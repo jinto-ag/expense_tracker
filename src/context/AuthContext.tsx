@@ -41,6 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { addMessage } = useMessage();
 
   useEffect(() => {
+    setLoading(true);
     const app = initializeApp(firebaseConfig);
     setApp(app);
     const auth = getAuth(app);
@@ -48,6 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setCurrentUser(user);
       setLoading(false);
     });
+    setLoading(false);
     return unsubscribe;
   }, []);
 

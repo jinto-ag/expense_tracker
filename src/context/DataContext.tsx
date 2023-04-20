@@ -1,5 +1,5 @@
 // DataContext.tsx
-import React from "react";
+import React, { useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getDatabase,
@@ -9,6 +9,7 @@ import {
   off,
   set,
   remove,
+  Database,
 } from "firebase/database";
 import { firebaseConfig } from "../configs/firebaseConfig";
 import { useAuth } from "./AuthContext";
@@ -31,30 +32,32 @@ interface DataProviderProps {
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [data, setData] = React.useState<any>(null);
+  const [db, setDb] = useState<Database | undefined>();
   const { app } = useAuth();
 
-  const db = getDatabase(app);
-
   React.useEffect(() => {
-    const dataRef = ref(db, "data");
-    const unsubscribe = onValue(dataRef, (snapshot) => {
-      setData(snapshot.val());
-    });
-    return () => {
-      unsubscribe();
-    };
+    app && setDb(getDatabase(app));
+    if (db) {
+      const dataRef = ref(db, "data");
+      const unsubscribe = onValue(dataRef, (snapshot) => {
+        setData(snapshot.val());
+      });
+      return () => {
+        unsubscribe();
+      };
+    }
   }, []);
 
   const createData = (data: any) => {
-    push(ref(db, "data"), data);
+    db && push(ref(db, "data"), data);
   };
 
   const updateData = (id: string, data: any) => {
-    set(ref(db, `data/${id}`), data);
+    db && set(ref(db, `data/${id}`), data);
   };
 
   const deleteData = (id: string) => {
-    remove(ref(db, `data/${id}`));
+    db && remove(ref(db, `data/${id}`));
   };
 
   return (
