@@ -16,6 +16,7 @@ const MessageAlert: React.FC<MessageAlertProps> = ({ messages }) => {
         <Alert
           key={index}
           variant={message.type}
+          show={show}
           onClose={() => setShow(false)}
           dismissible
         >

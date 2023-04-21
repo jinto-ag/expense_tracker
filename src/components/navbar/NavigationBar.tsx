@@ -37,6 +37,7 @@ const NavigationBar = () => {
       });
     }
   };
+  
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -63,6 +64,7 @@ const NavigationBar = () => {
           placement="end"
           show={show}
           onHide={handleClose}
+          className="p-3"
         >
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id="navbar-nav-offcanvas">Menu</Offcanvas.Title>

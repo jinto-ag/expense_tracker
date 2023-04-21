@@ -6,3 +6,8 @@
   z-index: 9999;
   max-width: max-content;
 }
+
+.messageContainer button{
+  box-shadow: none;
+  border: 0;
+}

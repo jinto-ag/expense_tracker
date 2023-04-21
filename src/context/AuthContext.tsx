@@ -41,7 +41,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { addMessage } = useMessage();
 
   useEffect(() => {
-    setLoading(true);
     const app = initializeApp(firebaseConfig);
     setApp(app);
     const auth = getAuth(app);
@@ -49,45 +48,48 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setCurrentUser(user);
       setLoading(false);
     });
-    setLoading(false);
+
+    console.log("Loading....", loading);
+
     return unsubscribe;
   }, []);
 
   const signUp = async (email: string, password: string) => {
     setLoading(true);
+
     const auth = getAuth();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) {}
+
+    setLoading(false);
   };
 
   const signIn = async (email: string, password: string) => {
     setLoading(true);
+
     if (currentUser) {
       return;
     }
     const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) {}
+
+    setLoading(false);
   };
 
   const signOut = async () => {
     setLoading(true);
+
     const auth = getAuth();
     try {
       await fbSignOut(auth);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) {}
+
+    setLoading(false);
   };
+  
 
   return (
     <AuthContext.Provider
