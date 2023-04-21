@@ -1,25 +1,22 @@
-// DataContext.tsx
-import React, { useState } from "react";
-import { initializeApp } from "firebase/app";
 import {
   getDatabase,
-  ref,
   onValue,
   push,
-  off,
-  set,
+  ref,
   remove,
-  Database,
+  set,
+  get
 } from "firebase/database";
-import { firebaseConfig } from "../configs/firebaseConfig";
+import React from "react";
 import { useAuth } from "./AuthContext";
 
 interface DataContextValue {
-  data: any; // define the shape of your data here
-  setData: (data: any) => void;
-  createData: (data: any) => void;
-  updateData: (id: string, data: any) => void;
-  deleteData: (id: string) => void;
+  data: Record<string, any>;
+  createData: (key: string, data: any) => Promise<any>;
+  getData: (key: string, id: string) => Promise<any>;
+  getListOfData: (key: string) => Promise<any>;
+  updateData: (key: string, id: string, data: any) => Promise<any>;
+  deleteData: (key: string, id: string) => Promise<any>;
 }
 
 const DataContext = React.createContext<DataContextValue | undefined>(
@@ -31,38 +28,67 @@ interface DataProviderProps {
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
-  const [data, setData] = React.useState<any>(null);
-  const [db, setDb] = useState<Database | undefined>();
+  const [data, setData] = React.useState<Record<string, any>>({});
   const { app } = useAuth();
+  const db = app && getDatabase(app);
 
   React.useEffect(() => {
-    app && setDb(getDatabase(app));
     if (db) {
-      const dataRef = ref(db, "data");
-      const unsubscribe = onValue(dataRef, (snapshot) => {
-        setData(snapshot.val());
+      const locations = ["expenses", "activities", "teams", "profiles"];
+      const unsubscribes = locations.map((location) => {
+        const dataRef = ref(db, location);
+        return onValue(dataRef, (snapshot) => {
+          setData((prevData) => ({
+            ...prevData,
+            [location]: snapshot.val(),
+          }));
+        });
       });
       return () => {
-        unsubscribe();
+        unsubscribes.forEach((unsubscribe) => unsubscribe());
       };
     }
-  }, []);
+  }, [db]);
 
-  const createData = (data: any) => {
-    db && push(ref(db, "data"), data);
+  const createData = async (key: string, data: any) => {
+    if (db) {
+      const result = await push(ref(db, key), data);
+      return result;
+    }
+    return null;
   };
 
-  const updateData = (id: string, data: any) => {
-    db && set(ref(db, `data/${id}`), data);
+  const getData = async (key: string, id: string) => {
+    if (db) {
+      const result = await get(ref(db, `${key}/${id}`));
+      return result.val();
+    }
+    return null;
   };
 
-  const deleteData = (id: string) => {
-    db && remove(ref(db, `data/${id}`));
+  const getListOfData = async (key: string) => {
+    if (db) {
+      const result = await get(ref(db, `${key}`));
+      return result.val();
+    }
+    return null;
+  };
+
+  const updateData = async (key: string, id: string, data: any) => {
+    if (db) {
+      await set(ref(db, `${key}/${id}`), data);
+    }
+  };
+
+  const deleteData = async (key: string, id: string) => {
+    if (db) {
+      await remove(ref(db, `${key}/${id}`));
+    }
   };
 
   return (
     <DataContext.Provider
-      value={{ data, setData, createData, updateData, deleteData }}
+      value={{ data, createData, getData, getListOfData, updateData, deleteData }}
     >
       {children}
     </DataContext.Provider>
